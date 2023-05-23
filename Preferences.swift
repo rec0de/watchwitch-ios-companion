@@ -18,6 +18,11 @@ class Preferences : ObservableObject {
     private var privateClassC: NSData? = nil
     private var privateClassD: NSData? = nil
 
+    private var localAddressClassC: NSString? = nil
+    private var localAddressClassD: NSString? = nil
+    private var remoteAddressClassC: NSString? = nil
+    private var remoteAddressClassD: NSString? = nil
+
     var hostUDP: NWEndpoint.Host = "192.168.133.29"
 
     
@@ -50,7 +55,13 @@ class Preferences : ObservableObject {
         privateClassA = preferences.object(forKey: "privateClassA") as? NSData
         privateClassC = preferences.object(forKey: "privateClassC") as? NSData
         privateClassD = preferences.object(forKey: "privateClassD") as? NSData
-        //NSLog("WWitchC: '\(publicClassA!)' of type '\(type(of: publicClassA!))'")
+
+        localAddressClassC = preferences.object(forKey: "localAddressClassC") as? NSString
+        localAddressClassD = preferences.object(forKey: "localAddressClassD") as? NSString
+        remoteAddressClassC = preferences.object(forKey: "remoteAddressClassC") as? NSString
+        remoteAddressClassD = preferences.object(forKey: "remoteAddressClassD") as? NSString
+
+        //NSLog("WWitchC: '\(localAddressClassC!)' of type '\(type(of: localAddressClassC!))'")
     }
 
     func sendKeys() {
@@ -61,9 +72,14 @@ class Preferences : ObservableObject {
         let cr = publicClassC!.base64EncodedString()
         let dr = publicClassD!.base64EncodedString()
 
-        let json = "{\"al\": \"\(al)\",\"cl\": \"\(cl)\",\"dl\": \"\(dl)\",\"ar\": \"\(ar)\",\"cr\": \"\(cr)\",\"dr\": \"\(dr)\"}"
+        let lac = localAddressClassC!
+        let lad = localAddressClassD!
+        let rac = remoteAddressClassC!
+        let rad = remoteAddressClassD!
+
+        let json = "{\"al\": \"\(al)\",\"cl\": \"\(cl)\",\"dl\": \"\(dl)\",\"ar\": \"\(ar)\",\"cr\": \"\(cr)\",\"dr\": \"\(dr)\",\"lac\": \"\(lac)\",\"lad\": \"\(lad)\",\"rac\": \"\(rac)\",\"rad\": \"\(rad)\"}"
         let jsonData = json.data(using: String.Encoding.utf8)!
-        //NSLog("WWitchC: \(json)")
+        NSLog("WWitchC: \(json)")
 
         // this is at least a little better than sending unencrypted keys over the network
         let key = SymmetricKey(data: "witchinthewatch-'#s[MZu!Xv*UZjbt".data(using: String.Encoding.utf8)!)
