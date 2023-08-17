@@ -23,6 +23,10 @@ class Preferences : ObservableObject {
     private var remoteAddressClassC: NSString? = nil
     private var remoteAddressClassD: NSString? = nil
 
+    private var localIdsUUID: NSString? = nil
+    private var localIdsClassA: NSString? = nil
+    private var remoteIdsClassA: NSString? = nil
+
     var hostUDP: NWEndpoint.Host = "192.168.133.29"
 
     
@@ -61,6 +65,10 @@ class Preferences : ObservableObject {
         remoteAddressClassC = preferences.object(forKey: "remoteAddressClassC") as? NSString
         remoteAddressClassD = preferences.object(forKey: "remoteAddressClassD") as? NSString
 
+        localIdsUUID = preferences.object(forKey: "idsLocalUUID") as? NSString
+        localIdsClassA = preferences.object(forKey: "idsLocalClassA") as? NSString
+        remoteIdsClassA = preferences.object(forKey: "idsRemoteClassA") as? NSString
+
         //NSLog("WWitchC: '\(localAddressClassC!)' of type '\(type(of: localAddressClassC!))'")
     }
 
@@ -77,7 +85,11 @@ class Preferences : ObservableObject {
         let rac = remoteAddressClassC!
         let rad = remoteAddressClassD!
 
-        let json = "{\"al\": \"\(al)\",\"cl\": \"\(cl)\",\"dl\": \"\(dl)\",\"ar\": \"\(ar)\",\"cr\": \"\(cr)\",\"dr\": \"\(dr)\",\"lac\": \"\(lac)\",\"lad\": \"\(lad)\",\"rac\": \"\(rac)\",\"rad\": \"\(rad)\"}"
+        let jsonFragmentTerminusKeys = "\"al\": \"\(al)\",\"cl\": \"\(cl)\",\"dl\": \"\(dl)\",\"ar\": \"\(ar)\",\"cr\": \"\(cr)\",\"dr\": \"\(dr)\""
+        let jsonFragmentAddresses = "\"lac\": \"\(lac)\",\"lad\": \"\(lad)\",\"rac\": \"\(rac)\",\"rad\": \"\(rad)\""
+        let jsonFragmentIDS = "\"idsLocalUUID\": \"\(localIdsUUID!)\", \"idsLocalClassA\": \"\(localIdsClassA!)\", \"idsRemoteClassA\": \"\(remoteIdsClassA!)\""
+
+        let json = "{\(jsonFragmentTerminusKeys), \(jsonFragmentAddresses), \(jsonFragmentIDS)}"
         let jsonData = json.data(using: String.Encoding.utf8)!
         NSLog("WWitchC: \(json)")
 
