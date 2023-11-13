@@ -8,6 +8,8 @@ Make sure the [WatchWitch iOS tweak](https://github.com/rec0de/watchwitch-ios) i
 
 Make sure [Theos](https://theos.dev/docs/) is installed on your computer. Dependencies and version incompatibilities can be tricky on linux, macOS might work more smoothly.
 
+You will also need [Cephei](https://hbang.github.io/libcephei/) installed on your iPhone. To use Cephei with Swift, you may have to copy the [module maps](modulemaps) to your `$THEOS/vendor/lib` folder, e.g. `cp modulemaps/Cephei/* $THEOS/vendor/lib/Cephei.framework/Modules`.
+
 Install the app:
 ```
 make package install
