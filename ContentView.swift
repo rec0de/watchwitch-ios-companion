@@ -4,6 +4,7 @@ import Network
 struct ContentView: View {
 
     @State private var targetIP: String = ""
+    @State private var transitKey: String = ""
     @ObservedObject private var prefs = Preferences()
 
     func forceReroute() {
@@ -35,7 +36,7 @@ struct ContentView: View {
     }
 
     func sendKeys() {
-        prefs.sendKeys()
+        prefs.sendKeys(userTransitKey: transitKey)
     }
 
     var body: some View {
@@ -56,9 +57,12 @@ struct ContentView: View {
                 }
             )).padding(5)
             Button("Force Update WiFi Address", action: forceReroute).padding(5)
-            Divider().padding(16)
+            Divider().padding(12)
             TextField("Target IP", text: $targetIP).padding(5)
             Button("Set Target IP", action: updateIP).padding(5)
+            Divider().padding(12)
+            Text("Transit Encryption Secret").padding(5)
+            TextField("default/unchanged", text: $transitKey).padding(5)
             Button("Send Keys", action: sendKeys).padding(5)
             Spacer()
         }.padding()

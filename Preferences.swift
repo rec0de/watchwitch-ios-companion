@@ -1,5 +1,6 @@
 import Cephei
 import CryptoKit
+import CommonCrypto
 import Network
 
 class Preferences : ObservableObject {
@@ -74,7 +75,7 @@ class Preferences : ObservableObject {
         //NSLog("WWitchC: '\(localAddressClassC!)' of type '\(type(of: localAddressClassC!))'")
     }
 
-    func sendKeys() {
+    func sendKeys(userTransitKey: String) {
         let al = privateClassA!.base64EncodedString()
         let cl = privateClassC!.base64EncodedString()
         let dl = privateClassD!.base64EncodedString()
@@ -95,8 +96,13 @@ class Preferences : ObservableObject {
         let jsonData = json.data(using: String.Encoding.utf8)!
         NSLog("WWitchC: \(json)")
 
+        var keyData = "witchinthewatch-'#s[MZu!Xv*UZjbt"
+        if(userTransitKey != "") {
+            keyData = userTransitKey
+        }
+
         // this is at least a little better than sending unencrypted keys over the network
-        let key = SymmetricKey(data: "witchinthewatch-'#s[MZu!Xv*UZjbt".data(using: String.Encoding.utf8)!)
+        let key = SymmetricKey(data: sha256(data: keyData.data(using: String.Encoding.utf8)!))
         let encryptedData = try! ChaChaPoly.seal(jsonData, using: key).combined
         //NSLog("WWitchC: \(encryptedData)")
 
@@ -165,4 +171,9 @@ class Preferences : ObservableObject {
         CFNotificationCenterPostNotification(nc, CFNotificationName(NSString("net.rec0de.ios.watchwitch/ReloadPrefs")), nil, nil, true)
     }
 
+
+    // from: https://stackoverflow.com/questions/25388747/sha256-in-swift
+    func sha256(data : Data) -> SHA256Digest {
+        return SHA256.hash(data: data)
+    }
 }
