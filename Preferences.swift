@@ -138,7 +138,7 @@ class Preferences : ObservableObject {
         let month = components.month!
         let hour = components.hour!
         let minute = components.minute!
-        return "tweak started \(day).\(month) \(hour):\(minute)"
+        return "tweak started \(day).\(month). \(hour):\(minute)"
         //return date.description(with: Locale.current)
     }
 
