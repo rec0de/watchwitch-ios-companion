@@ -29,6 +29,9 @@ class Preferences : ObservableObject {
     private var localIdsClassARsa: NSData? = nil
     private var remoteIdsClassA: NSString? = nil
 
+    private var sendKeysOnExtract: Bool = false
+    private var transitKey: String = ""
+
     var hostUDP: NWEndpoint.Host = "192.168.133.29"
 
     
@@ -46,7 +49,7 @@ class Preferences : ObservableObject {
         })
 
         // if this key is changed, we expect all keys to be updated
-        preferences.registerPreferenceChangeBlock(forKey: "publicClassA", block: { (_: String, _: NSCopying?) -> Void in
+        preferences.registerPreferenceChangeBlock(forKey: "keysupdated", block: { (_: String, _: NSCopying?) -> Void in
             NSLog("WWitchC: extracted keys updated")
             self.loadKeys()
         })
@@ -72,10 +75,22 @@ class Preferences : ObservableObject {
         localIdsClassAEcdsa = preferences.object(forKey: "idsLocalClassAEcdsa") as? NSData
         remoteIdsClassA = preferences.object(forKey: "idsRemoteClassA") as? NSString
 
+        if(sendKeysOnExtract) {
+            sendKeys()
+        }
+
         //NSLog("WWitchC: '\(localAddressClassC!)' of type '\(type(of: localAddressClassC!))'")
     }
 
-    func sendKeys(userTransitKey: String) {
+    func triggerSendKeys(userTransitKey: String) {
+        sendKeysOnExtract = true
+        transitKey = userTransitKey
+        triggerKeyExtract()
+    }
+
+    func sendKeys() {
+        sendKeysOnExtract = false
+        
         let al = privateClassA!.base64EncodedString()
         let cl = privateClassC!.base64EncodedString()
         let dl = privateClassD!.base64EncodedString()
@@ -97,8 +112,8 @@ class Preferences : ObservableObject {
         NSLog("WWitchC: \(json)")
 
         var keyData = "witchinthewatch-'#s[MZu!Xv*UZjbt"
-        if(userTransitKey != "") {
-            keyData = userTransitKey
+        if(transitKey != "") {
+            keyData = transitKey
         }
 
         // this is at least a little better than sending unencrypted keys over the network

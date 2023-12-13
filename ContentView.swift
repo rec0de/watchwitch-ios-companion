@@ -36,7 +36,7 @@ struct ContentView: View {
     }
 
     func sendKeys() {
-        prefs.sendKeys(userTransitKey: transitKey)
+        prefs.triggerSendKeys(userTransitKey: transitKey)
     }
 
     var body: some View {
