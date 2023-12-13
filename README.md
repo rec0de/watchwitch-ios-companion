@@ -22,6 +22,6 @@ Open the app, you should see the tweak start time being displayed indicating tha
 
 Enter the WiFi IP address of your Android phone running [WatchWitch Android](https://github.com/rec0de/watchwitch-android), then tap 'Set Target IP' to confirm.
 
-With the Android app running, tap "Send Keys". A 'got keys!' message should appear on your Android phone.
+With the Android app running, tap "Send Keys". A 'got keys!' message should appear on your Android phone. To better protect the transferred key material, you should set a custom transit secret in the app and enter the same secret on the Android side. Otherwise the app will fall back to a default secret which is strong, but technically public.
 
 Enable the WiFi address override, and force an address update if you like. When losing Bluetooth connection, your watch will now connect to your Android phone instead of your iPhone.
